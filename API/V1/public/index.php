@@ -1,38 +1,96 @@
 <?php
-    use Psr\Http\Message\ResponseInterface as Response;
-	use Psr\Http\Message\ServerRequestInterface as Request;
-	use Slim\Factory\AppFactory;
-	use ReallySimpleJWT\Token;
 
+    //error handler function
+    function customError($errno, $errstr) {
+        echo " ";
+    }
+    
+    //set error handler
+    //set_error_handler("customError");
+
+    // this handel the request and response.
+    use Psr\Http\Message\ResponseInterface as Response; 
+    use Psr\Http\Message\ServerRequestInterface as Request;
+
+    // This allows to Using Slim and build our application.
+    use Slim\Factory\AppFactory;
+    use ReallySimpletoken\Token;
+
+    // all the libraries we need.
     require __DIR__ . "/../vendor/autoload.php";
+    // self made functions
+    require_once "Controler/validation.php";
+    require "Model/users.php";
 
-	require "util/database.php";
+    // all response data will be in the Json Fromat
+    header("Content-Type: application/json");
 
-	header("Content-Type: application/json");
+    $app = AppFactory::create();
 
-	$app = AppFactory::create();
+    $app->setBasePath("/API/V1");
 
-	$app->setBasePath("/API/V1");
+/**
+ * This will work
+ * @param args 
+ * @param request_body 
+ * @return response 
+ */
+$app->post("/Login", function (Request $request, Response $response, $args) {
 
-    $app->post("/Authenticate", function (Request $request, Response $response, $args) {
-		$data = json_decode(file_get_contents("php://input"), true);
+    // reads the requested JSON body
+    $body_content = file_get_contents("php://input");
+    $JSON_data = json_decode($body_content, true);
 
-		require "util/config.php";
-		if (!$data || !isset($data["username"]) || !isset($data["password"]) || $data["username"] != $api_username || $data["password"] != $api_password) {
-			http_response_code(401);
-			die("Ungültige Anmeldeinformationen.");
-		}
+    // if JSON data doesn't have these then there is an error
+    if (isset($JSON_data["username"]) && isset($JSON_data["password"])) {
+    } else {
+        error_function(400, "Empty request");
+    }
 
-		//Generate the access token and store it in a cookie.
-		$token = Token::create($data["username"], $data["password"], time() + 3600, "localhost");
-		setcookie("token", $token, time() + 3600);
+    // Prepares the data to prevent bad data, SQL injection andCross site scripting
+    $name = validate_string($JSON_data["username"]);
+    $password = validate_string($JSON_data["password"]);
 
-		echo "Erfolgreich.";
+        if (!$password) {
+            error_function(400, "password is invalid, must contain at least 5 characters");
+        }
+        if (!$name) {
+            error_function(400, "username is invalid, must contain at least 5 characters");
+        }
 
-		return $response;
-	});
+    $password = hash("sha256", $password);
 
-	require "routes/customer.php";
+    $user = get_user_by_username($name);
 
-	$app->run();
+    if ($user["password_hash"] !==  $password) {
+        error_function(404, "not Found");
+    }
+
+    $token = create_token($name, $password, $user["id"]);
+
+    setcookie("token", $token);
+
+    message_function(200, "Succesfuly created Token");
+
+    return $response;
+});
+
+function user_validation(){
+    $current_user = validate_token();
+    if ($current_user === false) {
+        error_function(403, "unauthenticated");
+    }
+    return $current_user;
+};
+
+    $app->get("/Users", function (Request $request, Response $response, $args) {
+        //validate_token(); // unotherized pepole will get rejected
+
+        echo json_encode(get_all_users());
+
+        return $response;
+    });
+
+
+    $app->run();
 ?>

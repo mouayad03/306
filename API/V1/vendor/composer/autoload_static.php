@@ -4,13 +4,14 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite4a6ae9fa60e43fdd1ff88a4e0e65ea7
+class ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40
 {
     public static $files = array (
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0ccdf99b8f62f02c52cba55802e0c2e7' => __DIR__ . '/..' . '/zircote/swagger-php/src/functions.php',
     );
 
@@ -47,7 +48,6 @@ class ComposerStaticInite4a6ae9fa60e43fdd1ff88a4e0e65ea7
         ),
         'D' => 
         array (
-            'Doctrine\\Deprecations\\' => 22,
             'Doctrine\\Common\\Lexer\\' => 22,
             'Doctrine\\Common\\Annotations\\' => 28,
         ),
@@ -84,7 +84,7 @@ class ComposerStaticInite4a6ae9fa60e43fdd1ff88a4e0e65ea7
         ),
         'Psr\\Log\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/log/src',
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
         'Psr\\Http\\Server\\' => 
         array (
@@ -93,8 +93,8 @@ class ComposerStaticInite4a6ae9fa60e43fdd1ff88a4e0e65ea7
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Container\\' => 
         array (
@@ -116,13 +116,9 @@ class ComposerStaticInite4a6ae9fa60e43fdd1ff88a4e0e65ea7
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
         ),
-        'Doctrine\\Deprecations\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations',
-        ),
         'Doctrine\\Common\\Lexer\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/lexer/src',
+            0 => __DIR__ . '/..' . '/doctrine/lexer/lib/Doctrine/Common/Lexer',
         ),
         'Doctrine\\Common\\Annotations\\' => 
         array (
@@ -142,9 +138,9 @@ class ComposerStaticInite4a6ae9fa60e43fdd1ff88a4e0e65ea7
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite4a6ae9fa60e43fdd1ff88a4e0e65ea7::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite4a6ae9fa60e43fdd1ff88a4e0e65ea7::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInite4a6ae9fa60e43fdd1ff88a4e0e65ea7::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40::$classMap;
 
         }, null, ClassLoader::class);
     }
